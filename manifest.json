@@ -1,0 +1,23 @@
+{
+    "name": "Store App",
+    "short_name": "Store App",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#f3f3f3",
+    "theme_color": "#0175C2",
+    "description": "Management store, shop online",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/favicon-128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/favicon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
