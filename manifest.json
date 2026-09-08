@@ -1,11 +1,11 @@
 {
-    "name": "Store App",
-    "short_name": "Store App",
+    "name": "eshop",
+    "short_name": "eshop",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#f3f3f3",
+    "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "Management store, shop online",
+    "description": "Store management system",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
