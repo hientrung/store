@@ -20,9 +20,128 @@
 
   <title>eShop</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- Boot splash: shown while the browser downloads main.dart.js and boots the Flutter engine. -->
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+    }
+
+    #loading {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      background: #ffffff;
+      font-family: Roboto, "Segoe UI", Arial, sans-serif;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    #loading.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #loading .loading-title {
+      color: #1a1a1a;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    #loading .loading-bar {
+      width: 200px;
+      height: 4px;
+      border-radius: 2px;
+      background: #e0e0e0;
+      overflow: hidden;
+    }
+
+    #loading .loading-bar-indicator {
+      width: 40%;
+      height: 100%;
+      border-radius: 2px;
+      background: #0175C2;
+      animation: loading-slide 1.2s ease-in-out infinite;
+    }
+
+    #loading .loading-status {
+      color: #757575;
+      font-size: 14px;
+    }
+
+    #loading.error .loading-bar {
+      display: none;
+    }
+
+    #loading.error .loading-status {
+      color: #d32f2f;
+    }
+
+    @keyframes loading-slide {
+      0% {
+        transform: translateX(-100%);
+      }
+
+      100% {
+        transform: translateX(350%);
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <!-- Boot splash: removed by the script below once Flutter renders the first frame. -->
+  <div id="loading">
+    <div class="loading-title">eShop</div>
+    <div class="loading-bar">
+      <div class="loading-bar-indicator"></div>
+    </div>
+    <div class="loading-status">Loading…</div>
+  </div>
+
+  <script>
+    (function () {
+      var loading = document.getElementById('loading');
+      var status = loading ? loading.querySelector('.loading-status') : null;
+      var isVietnamese = (navigator.language || 'en').toLowerCase().indexOf('vi') === 0;
+
+      // Localize the loading status based on the browser language (vi / en).
+      if (status) {
+        status.textContent = isVietnamese ? 'Đang tải…' : 'Loading…';
+      }
+
+      // Hide the splash once the Flutter engine renders the first frame.
+      window.addEventListener('flutter-first-frame', function () {
+        if (!loading) return;
+        loading.classList.add('hidden');
+        window.setTimeout(function () {
+          if (loading.parentNode) loading.parentNode.removeChild(loading);
+        }, 300);
+      });
+
+      // Show an error state if the Flutter entrypoint script fails to load.
+      window.addEventListener('error', function (event) {
+        var target = event.target || event.srcElement;
+        if (!loading || !target || target.tagName !== 'SCRIPT') return;
+        loading.classList.add('error');
+        if (status) {
+          status.textContent = isVietnamese
+            ? 'Không tải được ứng dụng. Vui lòng tải lại trang.'
+            : 'Failed to load the application. Please refresh the page.';
+        }
+      }, true);
+    })();
+  </script>
+
   <script src="flutter_bootstrap.js" async></script>
 </body>
 
